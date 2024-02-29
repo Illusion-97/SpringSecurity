@@ -15,13 +15,13 @@ public abstract class GenericServiceImpl<
         E extends BaseEntity,
         R extends JpaRepository<E, Long>,
         D,
-        M extends GenericMapper<D,E>
+        M extends GenericMapper<D, E>
         > implements GenericService<D> {
 
     protected final R repository;
     protected final M mapper;
     protected final ApplicationEventPublisher publisher;
-    
+
     @Override
     public Page<D> findAll(Pageable pageable) {
         return repository.findAll(pageable).map(mapper::toDto);

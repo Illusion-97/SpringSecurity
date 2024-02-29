@@ -16,18 +16,16 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
     private final AuthService authService;
-    @PostMapping(value="/authenticate", consumes = "application/json")
+
+    @PostMapping(value = "/authenticate", consumes = "application/json")
     public ResponseEntity<LoginResponseDto> authenticate(@RequestBody LoginDto login) throws Exception {
         return ResponseEntity.ok(authService.authenticate(login));
     }
-    @PostMapping(value="/register", consumes = "application/json")
-    public void register(@RequestBody RegisterDto newUser){
+
+    @PostMapping(value = "/register", consumes = "application/json")
+    public void register(@RequestBody RegisterDto newUser) {
         authService.register(newUser);
     }
-
-
-
-
 
 
 }

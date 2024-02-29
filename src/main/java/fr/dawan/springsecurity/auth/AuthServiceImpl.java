@@ -3,7 +3,6 @@ package fr.dawan.springsecurity.auth;
 import fr.dawan.springsecurity.auth.dtos.LoginDto;
 import fr.dawan.springsecurity.auth.dtos.LoginResponseDto;
 import fr.dawan.springsecurity.auth.dtos.RegisterDto;
-import fr.dawan.springsecurity.user.UserMapper;
 import fr.dawan.springsecurity.user.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,7 +31,7 @@ public class AuthServiceImpl implements AuthService {
 
 
     @Override
-    public void register(RegisterDto register)  {
+    public void register(RegisterDto register) {
         register.setPassword(passwordEncoder.encode(register.getPassword()));
         userRepository.saveAndFlush(mapper.fromRegister(register));
     }
@@ -41,7 +40,7 @@ public class AuthServiceImpl implements AuthService {
     public LoginResponseDto authenticate(LoginDto login) throws SecurityException {
         Authentication authenticate = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(login.email(), login.password(), new ArrayList<>()));
-        if(authenticate.isAuthenticated()) {
+        if (authenticate.isAuthenticated()) {
             log.info("Successful authentication for user with email {} at {}", login.email(), LocalDateTime.now().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)));
             return mapper.toResponse((UserSecurity) authenticate.getPrincipal());
         }

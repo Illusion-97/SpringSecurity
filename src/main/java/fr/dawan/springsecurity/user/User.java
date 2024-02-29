@@ -7,7 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.security.access.prepost.PostAuthorize;
 
 import java.util.Set;
 
@@ -23,5 +22,5 @@ public class User extends BaseEntity {
     private String email;
     private String password;
     @ElementCollection
-	private Set<Roles> roles = Set.of(Roles.PUBLIC);
+    private Set<Roles> roles = Set.of(Roles.PUBLIC);
 }

@@ -13,6 +13,7 @@ import org.mapstruct.ReportingPolicy;
 public interface AuthMapper {
 
     User fromRegister(RegisterDto registerDto);
+
     @Mapping(target = "token", expression = "java(fr.dawan.springsecurity.auth.tools.JwtUtils.generateToken(security))")
     LoginResponseDto toResponse(UserSecurity security);
 }

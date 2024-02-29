@@ -1,11 +1,8 @@
 package fr.dawan.springsecurity.user;
 
 import fr.dawan.springsecurity.generic.GenericMapper;
-import org.mapstruct.*;
-import org.springframework.security.access.prepost.PostAuthorize;
-import org.springframework.security.access.prepost.PreAuthorize;
-
-import java.util.Set;
+import org.mapstruct.Mapper;
+import org.mapstruct.ReportingPolicy;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = "spring")
 public interface UserMapper extends GenericMapper<UserDto, User> {

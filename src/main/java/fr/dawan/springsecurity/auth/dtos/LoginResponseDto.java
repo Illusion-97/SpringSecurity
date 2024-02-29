@@ -7,16 +7,16 @@ import java.io.Serializable;
 import java.util.Set;
 
 @Value
-public class LoginResponseDto implements Serializable{
-	UserDto user;
-	String token;
+public class LoginResponseDto implements Serializable {
+    UserDto user;
+    String token;
 
-	@Value
-	public static class UserDto {
-		long id;
-		String firstname;
-		String lastname;
-		String email;
-		Set<Roles> roles;
-	}
+    @Value
+    public static class UserDto {
+        long id;
+        String firstname;
+        String lastname;
+        String email;
+        Set<Roles> roles;
+    }
 }

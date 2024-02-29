@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("users")
-public class UserController extends GenericController<UserDto,UserService> {
+public class UserController extends GenericController<UserDto, UserService> {
     public UserController(UserService service) {
         super(service);
     }

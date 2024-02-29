@@ -10,52 +10,52 @@ import java.util.Collection;
 
 public class UserSecurity implements UserDetails {
 
-	private final Collection<? extends GrantedAuthority> authorities;
+    private final Collection<? extends GrantedAuthority> authorities;
 
-	@Getter
-	private final User user;
-	
-	public UserSecurity(User user) {
-		this.user = user;
-		authorities = user.getRoles().stream()
-				.map(Enum::name)
-				.map(SimpleGrantedAuthority::new)
-				.toList();
-	}
+    @Getter
+    private final User user;
 
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return authorities;
-	}
+    public UserSecurity(User user) {
+        this.user = user;
+        authorities = user.getRoles().stream()
+                .map(Enum::name)
+                .map(SimpleGrantedAuthority::new)
+                .toList();
+    }
 
-	@Override
-	public String getPassword() {
-		return user.getPassword();
-	}
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return authorities;
+    }
 
-	@Override
-	public String getUsername() {
-		return user.getEmail();
-	}
+    @Override
+    public String getPassword() {
+        return user.getPassword();
+    }
 
-	@Override
-	public boolean isAccountNonExpired() {
-		return true;
-	}
+    @Override
+    public String getUsername() {
+        return user.getEmail();
+    }
 
-	@Override
-	public boolean isAccountNonLocked() {
-		return true;
-	}
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
 
-	@Override
-	public boolean isCredentialsNonExpired() {
-		return true;
-	}
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
 
-	@Override
-	public boolean isEnabled() {
-		return true;
-	}
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
 
 }
