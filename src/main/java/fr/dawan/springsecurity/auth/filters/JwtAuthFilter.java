@@ -30,7 +30,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, @NonNull HttpServletResponse response, @NonNull FilterChain filterChain)
             throws ServletException, IOException {
 
-        if (!request.getMethod().equals("OPTIONS") && (!Arrays.asList(SecurityConfig.authorizedUrls).contains(request.getRequestURI()))) {
+        if (!request.getMethod().equals("OPTIONS") && isInterceptedUrl(request.getRequestURI())) {
             String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
                 if (authHeader == null || (!authHeader.startsWith("Bearer") && !authHeader.startsWith("bearer")))
                     throw new ServletException("Invalid authorization");
@@ -48,6 +48,10 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                 }
         }
         filterChain.doFilter(request, response);
+    }
+
+    private boolean isInterceptedUrl(String URI) {
+        return Arrays.stream(SecurityConfig.authorizedUrls).map(s -> s.replace("**", ".*")).noneMatch(URI::matches);
     }
 
 }
