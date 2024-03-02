@@ -2,7 +2,10 @@ package fr.dawan.springsecurity.auth.conf;
 
 
 import fr.dawan.springsecurity.auth.filters.JwtAuthFilter;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.Getter;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -21,24 +24,39 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+import java.util.Map;
+
 
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
-    public static String[] authorizedUrls = new String[]{
+    @Getter
+    private static final String[] AUTHORIZED_URL = new String[]{
             "/auth/**",
             "/public",
             "/error"
     };
-    private final String frontUrl = "http://localhost:5173/";
-    @Autowired
-    private JwtAuthFilter jwtAuthFilter; //filtre pour contrôler le jeton JWT
 
-    @Autowired
-    private UserDetailsService userDetailsService; //service permettant d'aller chercher en bdd l'utilisateur par username
+    @Getter
+    private static final Map<HttpMethod, String[]> AUTHORIZED_BY_METHOD = Map.of(
+            HttpMethod.GET, new String[]{
+                    "/api/v1/licences",
+                    "/api/v1/cartes",
+            },
+            HttpMethod.POST, new String[]{
 
-    //Encodeur de mot de passe pour hasher les valeurs
+            },
+            HttpMethod.DELETE, new String[]{
+
+            }
+    );
+    private final JwtAuthFilter jwtAuthFilter;
+    private final UserDetailsService userDetailsService;
+    @Value("${front.app.url}")
+    private String frontUrl;
+
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -49,15 +67,16 @@ public class SecurityConfig {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
-    //Modification de la chaine des filtres pour ajouter un filtre qui vérifiera la présence d'un jeton JWT
-    @SuppressWarnings("unchecked")
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http.cors(AbstractHttpConfigurer::disable)
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                        .requestMatchers(authorizedUrls).permitAll()
+                        .requestMatchers(AUTHORIZED_URL).permitAll()
+                        .requestMatchers(HttpMethod.GET, AUTHORIZED_BY_METHOD.get(HttpMethod.GET)).permitAll()
+                        .requestMatchers(HttpMethod.POST, AUTHORIZED_BY_METHOD.get(HttpMethod.POST)).permitAll()
+                        .requestMatchers(HttpMethod.DELETE, AUTHORIZED_BY_METHOD.get(HttpMethod.DELETE)).permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -71,7 +90,7 @@ public class SecurityConfig {
     public WebMvcConfigurer myMvcConfigurer() {
         return new WebMvcConfigurer() {
             @Override
-            public void addCorsMappings(CorsRegistry registry) {
+            public void addCorsMappings(@NonNull CorsRegistry registry) {
                 registry.addMapping("/**").allowedOrigins(frontUrl)
                         .allowedMethods("*", "GET", "POST", "PUT", "DELETE", "OPTIONS").allowedHeaders("*")
                         .allowCredentials(true).maxAge(3600);

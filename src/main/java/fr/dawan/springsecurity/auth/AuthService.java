@@ -8,5 +8,5 @@ public interface AuthService {
 
     void register(RegisterDto register);
 
-    LoginResponseDto authenticate(LoginDto login) throws Exception;
+    LoginResponseDto authenticate(LoginDto login) throws SecurityException;
 }

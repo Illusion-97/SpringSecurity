@@ -42,7 +42,8 @@ public class AuthServiceImpl implements AuthService {
                 new UsernamePasswordAuthenticationToken(login.email(), login.password(), new ArrayList<>()));
         if (authenticate.isAuthenticated()) {
             log.info("Successful authentication for user with email {} at {}", login.email(), LocalDateTime.now().format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)));
-            return mapper.toResponse((UserSecurity) authenticate.getPrincipal());
+            UserSecurity principal = (UserSecurity) authenticate.getPrincipal();
+            return mapper.toResponse(principal);
         }
         throw new SecurityException("Invalid Credentials");
     }

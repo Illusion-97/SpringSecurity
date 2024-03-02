@@ -13,7 +13,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 public class JwtUtils {
-    private static final String SECRET_KEY = "secret23432Rdsfmldkm_!R%)45";
+    private static final String SECRET_KEY = "secret234342Rdsfmldkm_!R%)45";
     private static final long TOKEN_DURATION = Duration.ofHours(1).toMillis(); // 1H
     private static final long REFRESH_TOKEN_DURATION = Duration.ofDays(7).toMillis(); // 1H
 

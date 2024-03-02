@@ -4,6 +4,7 @@ import fr.dawan.springsecurity.auth.dtos.LoginDto;
 import fr.dawan.springsecurity.auth.dtos.LoginResponseDto;
 import fr.dawan.springsecurity.auth.dtos.RegisterDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.event.EventListener;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -26,6 +27,5 @@ public class AuthController {
     public void register(@RequestBody RegisterDto newUser) {
         authService.register(newUser);
     }
-
 
 }

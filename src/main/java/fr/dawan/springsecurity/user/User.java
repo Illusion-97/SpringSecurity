@@ -23,4 +23,14 @@ public class User extends BaseEntity {
     private String password;
     @ElementCollection
     private Set<Roles> roles = Set.of(Roles.PUBLIC);
+
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o);
+    }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
 }
